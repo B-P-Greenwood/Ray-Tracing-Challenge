@@ -1,0 +1,24 @@
+{
+  "name": "ray-tracing-challenge",
+  "version": "0.0.1",
+  "description": "TDD ray tracing  project ",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "go": "node index.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/B-P-Greenwood/Ray-Tracing-Challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/B-P-Greenwood/Ray-Tracing-Challenge/issues"
+  },
+  "homepage": "https://github.com/B-P-Greenwood/Ray-Tracing-Challenge#readme",
+  "dependencies": {
+    "jest": "^29.1.2"
+  }
+}

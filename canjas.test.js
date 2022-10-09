@@ -1,5 +1,5 @@
 import { describe, expect, test } from '@jest/globals';
-import { color, HadamardProduct } from './canvas.js';
+import { color, HadamardProduct, canvas } from './canvas.js';
 import { addTuples, minusTuples, scalar } from './index.js';
 
 describe('Colors are red green blue tuples', function () {
@@ -52,5 +52,17 @@ describe('Manipulating colors', function () {
     expect(actual[0]).toBeGreaterThanOrEqual(outcome[0]);
     expect(actual[1]).toBeGreaterThanOrEqual(outcome[1]);
     expect(actual[2]).toBeGreaterThanOrEqual(outcome[2]);
+  });
+});
+describe('Creating a canvas', function () {
+  test('Canvas(10, 20) creates a canvas with width = 10', function () {
+    const actual = canvas(10, 20);
+    const outcome = 10;
+    expect(actual[0].length).toStrictEqual(outcome);
+  });
+  test('Canvas(10, 20) creates a canvas with height = 20', function () {
+    const actual = canvas(10, 20);
+    const outcome = 20;
+    expect(actual.length).toStrictEqual(outcome);
   });
 });

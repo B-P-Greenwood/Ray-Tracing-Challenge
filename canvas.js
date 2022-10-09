@@ -9,3 +9,10 @@ export function HadamardProduct(color1, color2) {
   });
   return result;
 }
+export function canvas(width, height) {
+  let canvas = new Array(height);
+  for (let i = 0; i < canvas.length; i++) {
+    canvas[i] = new Array(width);
+  }
+  return canvas;
+}

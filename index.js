@@ -108,6 +108,7 @@ class Environment {
     this.wind = wind; //vector
   }
 }
+/*
 let p = new Projectile(point(0, 1, 0), normalise(vector(4, 2, 0)));
 let e = new Environment(vector(0, -0.1, 0), vector(-0.01, 0, 0));
 
@@ -117,3 +118,4 @@ while (p.position[1] >= 0) {
   ticks++;
   console.log('position: ', p.position, 'number of ticks :', ticks);
 }
+*/

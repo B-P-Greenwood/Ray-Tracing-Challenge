@@ -1,5 +1,11 @@
 import { describe, expect, test } from '@jest/globals';
-import { color, HadamardProduct, canvas } from './canvas.js';
+import {
+  color,
+  HadamardProduct,
+  canvas,
+  canvasToPPM,
+  writePixel,
+} from './canvas.js';
 import { addTuples, minusTuples, scalar } from './index.js';
 
 describe('Colors are red green blue tuples', function () {
@@ -64,5 +70,28 @@ describe('Creating a canvas', function () {
     const actual = canvas(10, 20);
     const outcome = 20;
     expect(actual.length).toStrictEqual(outcome);
+  });
+});
+describe('Constructing the PPM header', function () {
+  test('A canvas canvas(5,3) has PPM header p3, 5 3, 255', function () {
+    const c = canvas(5, 3);
+    const actual = canvasToPPM(c);
+    const outcome = /P3\n5 3\n255/;
+    expect(actual).toMatch(outcome);
+  });
+});
+describe('Constructing the PPM pixel data', function () {
+  test('Given a canvas with set pixels a correct PPM image is returned', function () {
+    let c = canvas(5, 3);
+    const c1 = color(1.5, 0, 0);
+    const c2 = color(0, 0.5, 0);
+    const c3 = color(-0.5, 0, 1);
+    c = writePixel(c, 0, 0, c1);
+    c = writePixel(c, 2, 1, c2);
+    c = writePixel(c, 4, 2, c3);
+    const actual = canvasToPPM(c);
+    const outcome =
+      /P3\n5 3\n255\n255,0,00,0,00,0,00,0,00,0,0\n0,0,00,0,00,128,00,0,00,0,0\n0,0,00,0,00,0,00,0,00,0,255/;
+    expect(actual).toMatch(outcome);
   });
 });

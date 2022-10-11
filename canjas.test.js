@@ -80,22 +80,26 @@ describe('Constructing the PPM header', function () {
     expect(actual).toMatch(outcome);
   });
 });
-describe('Constructing the PPM pixel data', function () {
-  test('Given a canvas with set pixels a correct PPM image is returned', function () {
-    let c = canvas(5, 3);
-    const c1 = color(1.5, 0, 0);
-    const c2 = color(0, 0.5, 0);
-    const c3 = color(-0.5, 0, 1);
-    c = writePixel(c, 0, 0, c1);
-    c = writePixel(c, 2, 1, c2);
-    c = writePixel(c, 4, 2, c3);
-    const actual = canvasToPPM(c);
-    const a = actual.split(`\n`);
-    const outcome1 = '255 0 0 0 0 0 0 0 0 0 0 0 0 0 0';
-    const outcome2 = '0 0 0 0 0 0 0 128 0 0 0 0 0 0 0';
-    const outcome3 = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 255';
+describe('Constructing the PPM pixel data, Given a canvas with set pixels a correct PPM image is returned', function () {
+  let c = canvas(5, 3);
+  const c1 = color(1.5, 0, 0);
+  const c2 = color(0, 0.5, 0);
+  const c3 = color(-0.5, 0, 1);
+  c = writePixel(c, 0, 0, c1);
+  c = writePixel(c, 2, 1, c2);
+  c = writePixel(c, 4, 2, c3);
+  const actual = canvasToPPM(c);
+  const a = actual.split(`\n`);
+  const outcome1 = '255 0 0 0 0 0 0 0 0 0 0 0 0 0 0';
+  const outcome2 = '0 0 0 0 0 0 0 128 0 0 0 0 0 0 0';
+  const outcome3 = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 255';
+  test('Line 3 of the image should be 255 0 0 0 0 0 0 0 0 0 0 0 0 0 0', function () {
     expect(a[3]).toMatch(outcome1);
+  });
+  test('Line 4 of the image should be 0 0 0 0 0 0 0 128 0 0 0 0 0 0 0', function () {
     expect(a[4]).toMatch(outcome2);
+  });
+  test('Line 5 of the image should be 0 0 0 0 0 0 0 0 0 0 0 0 0 0 255', function () {
     expect(a[5]).toMatch(outcome3);
   });
 });

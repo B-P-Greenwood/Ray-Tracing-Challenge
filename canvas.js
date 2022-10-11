@@ -64,10 +64,10 @@ export function canvasToPPM(canvas) {
 }
 
 export function writePixel(canvas, x, y, color) {
-  if (x >= canvas.length || y >= canvas[0].length || x < 0 || y < 0) {
+  if (x >= canvas[0].length || y >= canvas.length || x < 0 || y < 0) {
     return canvas;
   } else {
-    canvas[x][y] = color;
+    canvas[y][x] = color;
     return canvas;
   }
 }

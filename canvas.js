@@ -11,7 +11,7 @@ export function HadamardProduct(color1, color2) {
 }
 export function canvas(width, height) {
   let canvas = new Array(height);
-  for (let i = 0; i < canvas.length; i++) {
+  for (let i = 0; i < height; i++) {
     let c = color(0, 0, 0);
     let inner = [];
     for (let j = 0; j < width; j++) inner.push(c);
@@ -64,10 +64,10 @@ export function canvasToPPM(canvas) {
 }
 
 export function writePixel(canvas, x, y, color) {
-  if (x >= canvas[1].length || y >= canvas.length || x < 0 || y < 0) {
+  if (x >= canvas.length || y >= canvas[0].length || x < 0 || y < 0) {
     return canvas;
   } else {
-    canvas[y][x] = color;
+    canvas[x][y] = color;
     return canvas;
   }
 }

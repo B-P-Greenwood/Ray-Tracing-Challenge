@@ -132,7 +132,7 @@ while (p.position[1] >= 0) {
   ticks++;
 }
 const output = canvasToPPM(c);
-fs.writeFile('canvasImage.ppm', output, function (err) {
+fs.writeFile('./Created Images/canvasImage.ppm', output, function (err) {
   if (err) throw err;
   console.log('Saved!');
 });

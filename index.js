@@ -124,8 +124,8 @@ let red = color(1, 0, 0);
 while (p.position[1] >= 0) {
   writePixel(
     c,
-    c.length - 1 - Math.round(p.position[1]),
     Math.round(p.position[0]),
+    c.length - 1 - Math.round(p.position[1]),
     red
   );
   p = tick(e, p);

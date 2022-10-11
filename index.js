@@ -108,14 +108,31 @@ class Environment {
     this.wind = wind; //vector
   }
 }
-/*
-let p = new Projectile(point(0, 1, 0), normalise(vector(4, 2, 0)));
+const vel = [];
+normalise(vector(1, 1.8, 0)).forEach((item) => {
+  vel.push(item * 11.25);
+});
+
+let p = new Projectile(point(0, 1, 0), vector(4, 10, 0));
 let e = new Environment(vector(0, -0.1, 0), vector(-0.01, 0, 0));
 
+import { canvas, canvasToPPM, writePixel, color } from './canvas.js';
+import fs from 'fs';
 let ticks = 0;
+let c = canvas(900, 550);
+let red = color(1, 0, 0);
 while (p.position[1] >= 0) {
+  writePixel(
+    c,
+    Math.round(p.position[1]),
+    c.length - 1 - Math.round(p.position[0]),
+    red
+  );
   p = tick(e, p);
   ticks++;
-  console.log('position: ', p.position, 'number of ticks :', ticks);
 }
-*/
+const output = canvasToPPM(c);
+fs.writeFile('canvasImage.ppm', output, function (err) {
+  if (err) throw err;
+  console.log('Saved!');
+});

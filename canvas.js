@@ -26,6 +26,7 @@ export function canvasToPPM(canvas) {
   let result = `P3\n${width} ${height}\n255`;
   for (let i = 0; i < height; i++) {
     result += '\n';
+    let widthCount = 0;
     for (let j = 0; j < width; j++) {
       let c = canvas[i][j];
       let r = c[0];
@@ -41,13 +42,32 @@ export function canvasToPPM(canvas) {
       r = Math.round(r * 255);
       g = Math.round(g * 255);
       b = Math.round(b * 255);
-      result += [r, g, b];
+
+      result += `${r} `;
+      widthCount += 4;
+      if (widthCount >= 67) {
+        result += `\n`;
+        widthCount = 0;
+      }
+      result += `${g} `;
+      widthCount += 4;
+      if (widthCount >= 67) {
+        result += `\n`;
+        widthCount = 0;
+      }
+      result += `${b} `;
+      widthCount += 4;
     }
   }
+  result += '\n';
   return result;
 }
 
 export function writePixel(canvas, x, y, color) {
-  canvas[y][x] = color;
-  return canvas;
+  if (x >= canvas[1].length || y >= canvas.length || x < 0 || y < 0) {
+    return canvas;
+  } else {
+    canvas[y][x] = color;
+    return canvas;
+  }
 }

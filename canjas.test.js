@@ -90,8 +90,49 @@ describe('Constructing the PPM pixel data', function () {
     c = writePixel(c, 2, 1, c2);
     c = writePixel(c, 4, 2, c3);
     const actual = canvasToPPM(c);
-    const outcome =
-      /P3\n5 3\n255\n255,0,00,0,00,0,00,0,00,0,0\n0,0,00,0,00,128,00,0,00,0,0\n0,0,00,0,00,0,00,0,00,0,255/;
-    expect(actual).toMatch(outcome);
+    const a = actual.split(`\n`);
+    const outcome1 = '255 0 0 0 0 0 0 0 0 0 0 0 0 0 0';
+    const outcome2 = '0 0 0 0 0 0 0 128 0 0 0 0 0 0 0';
+    const outcome3 = '0 0 0 0 0 0 0 0 0 0 0 0 0 0 255';
+    expect(a[3]).toMatch(outcome1);
+    expect(a[4]).toMatch(outcome2);
+    expect(a[5]).toMatch(outcome3);
+  });
+});
+describe('Splitting long lines in PPM files', function () {
+  test('For a canvas(10,2), with set pixels a correct PPM image is returned with the length constraints', function () {
+    let c = canvas(10, 2);
+    const c1 = color(1, 0.8, 0.6);
+    for (let i = 0; i < c.length; i++) {
+      for (let j = 0; j < c[i].length; j++) {
+        c = writePixel(c, j, i, c1);
+      }
+    }
+    const actual = canvasToPPM(c);
+    const a = actual.split(`\n`);
+    const outcome1 =
+      '255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204';
+    const outcome2 = '153 255 204 153 255 204 153 255 204 153 255 204 153';
+    const outcome3 =
+      '255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204';
+    const outcome4 = '153 255 204 153 255 204 153 255 204 153 255 204 153';
+    expect(a[3]).toMatch(outcome1);
+    expect(a[4]).toMatch(outcome2);
+    expect(a[5]).toMatch(outcome3);
+    expect(a[6]).toMatch(outcome4);
+  });
+});
+describe('Ensuring the PPM file ends with a new line character', function () {
+  test('Given a canvas(5,3) the last character is for a new line', function () {
+    let c = canvas(5, 3);
+    const c1 = color(1.5, 0, 0);
+    const c2 = color(0, 0.5, 0);
+    const c3 = color(-0.5, 0, 1);
+    c = writePixel(c, 0, 0, c1);
+    c = writePixel(c, 2, 1, c2);
+    c = writePixel(c, 4, 2, c3);
+    const actual = canvasToPPM(c);
+    const outcome = '\n';
+    expect(actual[actual.length - 1]).toMatch(outcome);
   });
 });

@@ -109,6 +109,8 @@ class Environment {
   }
 }
 
+/*
+Chapter 2 output
 let p = new Projectile(point(100, 1, 0), vector(4, 10, 0));
 let e = new Environment(vector(0, -0.1, 0), vector(-0.01, 0, 0));
 import { canvas, canvasToPPM, writePixel, color } from './canvas.js';

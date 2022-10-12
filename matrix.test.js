@@ -1,5 +1,15 @@
 import { describe, expect, test } from '@jest/globals';
-import { matrix, compareMatrices, multiplyMatrices } from './matrix.js';
+import {
+  matrix,
+  compareMatrices,
+  multiplyMatrices,
+  matrixMultipliedByTuple,
+  identityMatrix,
+  transposingMatrix,
+  determinant,
+  subMatrix,
+} from './matrix.js';
+import { tuple } from './index.js';
 
 describe('Constructing and inspecting a 4x4 matrix \n| 1 | 2 | 3 | 4 |\n| 5.5 | 6.5 | 7.5 | 8.5 |\n| 9 | 10 | 11 | 12 |\n| 13.5 | 14.5 | 15.5 | 16.5 |', function () {
   const M = matrix([
@@ -122,6 +132,90 @@ describe('Multiply two 4x4 matrices A= \n| 1 | 2 | 3 | 4 |\n| 5 | 6 | 7 | 8 |\n|
       [44, 54, 114, 108],
       [40, 58, 110, 102],
       [16, 26, 46, 42],
+    ];
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('A matrix A= | 1 | 2 | 3 | 4 |\n| 2 | 4 | 4 | 2 |\n| 8 | 6 | 4 | 1 |\n| 0 | 0 | 0 | 1 | multiplied by a tuple (1,2,3,1). ', function () {
+  const A = [
+    [1, 2, 3, 4],
+    [2, 4, 4, 2],
+    [8, 6, 4, 1],
+    [0, 0, 0, 1],
+  ];
+  const T = tuple(1, 2, 3, 1);
+  test('A*B = tuple(18,24,33,1)', function () {
+    const actual = matrixMultipliedByTuple(A, T);
+    const outcome = [18, 24, 33, 1];
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Multiplying a matrix by the identity matrix. Matrix A= | 1 | 2 | 3 | 4 |\n| 2 | 4 | 4 | 2 |\n| 8 | 6 | 4 | 1 |\n| 0 | 0 | 0 | 1 |', function () {
+  const A = [
+    [1, 2, 3, 4],
+    [2, 4, 4, 2],
+    [8, 6, 4, 1],
+    [0, 0, 0, 1],
+  ];
+  test('A*identity Matrix = 1', function () {
+    const actual = multiplyMatrices(A, identityMatrix());
+    expect(actual).toStrictEqual(A);
+  });
+});
+describe('Multiplying a tuple by the identity matrix', function () {
+  test('Tuple A=(1,2,3,4) * identity matrix = A', function () {
+    const T = tuple(1, 2, 3, 4);
+    const actual = matrixMultipliedByTuple(identityMatrix(), T);
+    expect(actual).toStrictEqual(T);
+  });
+});
+describe('Transposing a matrix, matrix=| 0 | 9 | 3 | 0 |\n| 9 | 8 | 0 | 8 |\n| 1 | 8 | 5 | 3 |\n| 0 | 0 | 5 | 8 |', function () {
+  const matrix = [
+    [0, 9, 3, 0],
+    [9, 8, 0, 8],
+    [1, 8, 5, 3],
+    [0, 0, 5, 8],
+  ];
+  test('matrix transposed | 0 | 9 | 1 | 0 |\n| 9 | 8 | 8 | 0 |\n| 3 | 0 | 5 | 5 |\n| 0 | 8 | 3 | 8 |', function () {
+    const outcome = [
+      [0, 9, 1, 0],
+      [9, 8, 8, 0],
+      [3, 0, 5, 5],
+      [0, 8, 3, 8],
+    ];
+    const actual = transposingMatrix(matrix);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Transposing the identity matrix returns the identity matrix', function () {
+  test('transposingMatrix(identityMatrix()) = identityMatrix', function () {
+    const actual = transposingMatrix(identityMatrix());
+    const outcome = identityMatrix();
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Calculating the determinant of a 2x2 matrix | 1 | 5 |\n| -3 | 2 |', function () {
+  const matrix = [
+    [1, 5],
+    [-3, 2],
+  ];
+  test('determinant(A) = 17', function () {
+    const actual = determinant(matrix);
+    const outcome = 17;
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('A submatrix of a 3x3 matrix is a 2x2 matrix', function () {
+  const matrix = [
+    [1, 5, 0],
+    [-3, 2, 7],
+    [0, 6, -3],
+  ];
+  text('The correct submatrix has been extracted', function () {
+    const actual = subMatrix(matrix, 0, 2);
+    const outcome = [
+      [-3, 2],
+      [0, 6],
     ];
     expect(actual).toStrictEqual(outcome);
   });

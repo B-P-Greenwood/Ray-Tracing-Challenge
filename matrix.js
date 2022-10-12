@@ -36,3 +36,43 @@ export function multiplyMatrices(a, b) {
   }
   return result;
 }
+
+export function matrixMultipliedByTuple(matrix, tuple) {
+  let result = [];
+  for (let i = 0; i < matrix.length; i++) {
+    result.push(
+      matrix[i][0] * tuple[0] +
+        matrix[i][1] * tuple[1] +
+        matrix[i][2] * tuple[2] +
+        matrix[i][3] * tuple[3]
+    );
+  }
+  return result;
+}
+
+export function identityMatrix() {
+  return [
+    [1, 0, 0, 0],
+    [0, 1, 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1],
+  ];
+}
+
+export function transposingMatrix(matrix) {
+  let result = [];
+  for (let i = 0; i < matrix.length; i++) {
+    let inner = [];
+    for (let j = 0; j < matrix[i].length; j++) {
+      inner.push(matrix[j][i]);
+    }
+    result.push(inner);
+  }
+  return result;
+}
+
+export function determinant(matrix) {
+  return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+}
+
+export function subMatrix(matrix, row, column) {}

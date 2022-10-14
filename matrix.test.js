@@ -8,6 +8,8 @@ import {
   transposingMatrix,
   determinant,
   subMatrix,
+  minor,
+  cofactor,
 } from './matrix.js';
 import { tuple } from './index.js';
 
@@ -211,12 +213,59 @@ describe('A submatrix of a 3x3 matrix is a 2x2 matrix', function () {
     [-3, 2, 7],
     [0, 6, -3],
   ];
-  text('The correct submatrix has been extracted', function () {
+  test('The correct submatrix has been extracted', function () {
     const actual = subMatrix(matrix, 0, 2);
     const outcome = [
       [-3, 2],
       [0, 6],
     ];
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('A submatrix of a 4x4 matrix is a 3x3 matrix', function () {
+  const matrix = [
+    [-6, 1, 1, 6],
+    [-8, 5, 8, 6],
+    [-1, 0, 8, 2],
+    [-7, 1, -1, 1],
+  ];
+  test('The correct submatrix has been extracted', function () {
+    const actual = subMatrix(matrix, 2, 1);
+    const outcome = [
+      [-6, 1, 6],
+      [-8, 8, 6],
+      [-7, -1, 1],
+    ];
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Calculating the minor of a 3x3 matrix', function () {
+  test('The submatrix equals the determinant of the same 3x3 matrix', function () {
+    const matrix = [
+      [3, 5, 0],
+      [3, -1, -7],
+      [6, -1, 5],
+    ];
+    const sub = subMatrix(matrix, 1, 0);
+    const d = determinant(sub);
+    const actual = minor(matrix, 1, 0);
+    expect(actual).toStrictEqual(d);
+  });
+});
+describe('Calculating a cofactor of a 3x3 matrix', function () {
+  const matrix = [
+    [3, 5, 0],
+    [2, -1, -7],
+    [6, -1, 5],
+  ];
+  test('Minor of the matrix position equals the cofactor', function () {
+    const outcome = minor(matrix, 0, 0);
+    const actual = cofactor(matrix, 0, 0);
+    expect(actual).toStrictEqual(outcome);
+  });
+  test('Minor of the matrix poition does not equal the cofactor', function () {
+    const outcome = minor(matrix, 1, 0);
+    const actual = cofactor(matrix, 1, 0);
     expect(actual).toStrictEqual(outcome);
   });
 });

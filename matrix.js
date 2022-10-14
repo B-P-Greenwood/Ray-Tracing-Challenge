@@ -75,4 +75,30 @@ export function determinant(matrix) {
   return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
 }
 
-export function subMatrix(matrix, row, column) {}
+export function subMatrix(matrix, row, column) {
+  let result = [];
+  for (let i = 0; i < matrix.length; i++) {
+    if (i != row) {
+      let inner = [];
+      for (let j = 0; j < matrix[i].length; j++) {
+        if (j != column) inner.push(matrix[i][j]);
+      }
+      result.push(inner);
+    }
+  }
+  return result;
+}
+
+export function minor(matrix, row, column) {
+  if (matrix.length === 3) {
+    const sub = subMatrix(matrix, row, column);
+    return determinant(sub);
+  }
+}
+
+export function cofactor(matrix, row, column) {
+  let compare = minor(matrix, row, column);
+  if (row + column === 0) return compare;
+  else if ((row + column) % 2 === 0) return -compare;
+  else return compare;
+}

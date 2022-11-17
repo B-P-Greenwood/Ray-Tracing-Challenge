@@ -72,7 +72,15 @@ export function transposingMatrix(matrix) {
 }
 
 export function determinant(matrix) {
-  return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+  let result = 0;
+  if (matrix.length == 2) {
+    result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+  } else {
+    for (let i = 0; i < matrix.length; i++) {
+      result += matrix[0][i] * cofactor(matrix, 0, i);
+    }
+  }
+  return result;
 }
 
 export function subMatrix(matrix, row, column) {
@@ -90,15 +98,41 @@ export function subMatrix(matrix, row, column) {
 }
 
 export function minor(matrix, row, column) {
-  if (matrix.length === 3) {
-    const sub = subMatrix(matrix, row, column);
-    return determinant(sub);
-  }
+  const sub = subMatrix(matrix, row, column);
+  return determinant(sub);
 }
 
 export function cofactor(matrix, row, column) {
   let compare = minor(matrix, row, column);
-  if (row + column === 0) return compare;
-  else if ((row + column) % 2 === 0) return -compare;
-  else return compare;
+
+  if ((row + column) % 2 === 0) return compare;
+  else return -compare;
+}
+
+export function isInvertible(matrix) {
+  return determinant(matrix) != 0 ? true : false;
+}
+
+export function inverse(matrix) {
+  if (!isInvertible(matrix)) {
+    console.log(`Matrix: ${matrix} is not invertible`);
+  } else {
+    let result = emptyMatrix(matrix.length);
+    let det = determinant(matrix);
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix.length; j++) {
+        let item = cofactor(matrix, i, j);
+        result[j][i] = item / det;
+      }
+    }
+    return result;
+  }
+}
+
+export function emptyMatrix(size) {
+  let matrix = new Array();
+  for (let i = 0; i < size; i++) {
+    matrix.push([]);
+  }
+  return matrix;
 }

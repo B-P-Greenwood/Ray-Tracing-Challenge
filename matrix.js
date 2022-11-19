@@ -1,136 +1,126 @@
-export function matrix(input) {
-  let matrix = new Array(input.length);
-  for (let i = 0; i < input.length; i++) {
-    let inner = [];
-    for (let j = 0; j < input[i].length; j++) inner.push(input[i][j]);
-    matrix[i] = inner;
+export class Matrix extends Array {
+  static get [Symbol.species]() {
+    return this;
   }
-  return matrix;
-}
 
-export function compareMatrices(a, b) {
-  if (a.length !== b.length) return false;
+  compareMatrices(matrix) {
+    if (this.length !== matrix.length) return false;
 
-  for (let i = 0; i < a.length; i++) {
-    if (a[i].length !== b[i].length) return false;
-    for (let j = 0; j < a[i].length; j++) {
-      if (a[i][j] !== b[i][j]) return false;
+    for (let i = 0; i < this.length; i++) {
+      if (this[i].length !== matrix[i].length) return false;
+      for (let j = 0; j < this[i].length; j++) {
+        if (this[i][j] !== matrix[i][j]) return false;
+      }
     }
+    return true;
   }
-  return true;
-}
 
-export function multiplyMatrices(a, b) {
-  let result = [];
-  for (let i = 0; i < a.length; i++) {
-    let inner = [];
-    for (let j = 0; j < a[i].length; j++) {
-      inner.push(
-        a[i][0] * b[0][j] +
-          a[i][1] * b[1][j] +
-          a[i][2] * b[2][j] +
-          a[i][3] * b[3][j]
-      );
-    }
-    result.push(inner);
-  }
-  return result;
-}
-
-export function matrixMultipliedByTuple(matrix, tuple) {
-  let result = [];
-  for (let i = 0; i < matrix.length; i++) {
-    result.push(
-      matrix[i][0] * tuple[0] +
-        matrix[i][1] * tuple[1] +
-        matrix[i][2] * tuple[2] +
-        matrix[i][3] * tuple[3]
-    );
-  }
-  return result;
-}
-
-export function identityMatrix() {
-  return [
-    [1, 0, 0, 0],
-    [0, 1, 0, 0],
-    [0, 0, 1, 0],
-    [0, 0, 0, 1],
-  ];
-}
-
-export function transposingMatrix(matrix) {
-  let result = [];
-  for (let i = 0; i < matrix.length; i++) {
-    let inner = [];
-    for (let j = 0; j < matrix[i].length; j++) {
-      inner.push(matrix[j][i]);
-    }
-    result.push(inner);
-  }
-  return result;
-}
-
-export function determinant(matrix) {
-  let result = 0;
-  if (matrix.length == 2) {
-    result = matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
-  } else {
-    for (let i = 0; i < matrix.length; i++) {
-      result += matrix[0][i] * cofactor(matrix, 0, i);
-    }
-  }
-  return result;
-}
-
-export function subMatrix(matrix, row, column) {
-  let result = [];
-  for (let i = 0; i < matrix.length; i++) {
-    if (i != row) {
+  multiplyMatrices(matrix) {
+    let result = new Matrix();
+    for (let i = 0; i < this.length; i++) {
       let inner = [];
-      for (let j = 0; j < matrix[i].length; j++) {
-        if (j != column) inner.push(matrix[i][j]);
+      for (let j = 0; j < this[i].length; j++) {
+        inner.push(
+          this[i][0] * matrix[0][j] +
+            this[i][1] * matrix[1][j] +
+            this[i][2] * matrix[2][j] +
+            this[i][3] * matrix[3][j]
+        );
       }
       result.push(inner);
     }
+    return result;
   }
-  return result;
-}
 
-export function minor(matrix, row, column) {
-  const sub = subMatrix(matrix, row, column);
-  return determinant(sub);
-}
+  matrixMultipliedByTuple(tuple) {
+    let result = [];
+    for (let i = 0; i < this.length; i++) {
+      result.push(
+        this[i][0] * tuple[0] +
+          this[i][1] * tuple[1] +
+          this[i][2] * tuple[2] +
+          this[i][3] * tuple[3]
+      );
+    }
+    return result;
+  }
 
-export function cofactor(matrix, row, column) {
-  let compare = minor(matrix, row, column);
+  identityMatrix() {
+    return new Matrix([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]);
+  }
 
-  if ((row + column) % 2 === 0) return compare;
-  else return -compare;
-}
+  transposingMatrix() {
+    let result = new Matrix();
+    for (let i = 0; i < this.length; i++) {
+      let inner = [];
+      for (let j = 0; j < this[i].length; j++) {
+        inner.push(this[j][i]);
+      }
+      result.push(inner);
+    }
+    return result;
+  }
 
-export function isInvertible(matrix) {
-  return determinant(matrix) != 0 ? true : false;
-}
-
-export function inverse(matrix) {
-  if (!isInvertible(matrix)) {
-    console.log(`Matrix: ${matrix} is not invertible`);
-  } else {
-    let result = emptyMatrix(matrix.length);
-    let det = determinant(matrix);
-    for (let i = 0; i < matrix.length; i++) {
-      for (let j = 0; j < matrix.length; j++) {
-        let item = cofactor(matrix, i, j);
-        result[j][i] = item / det;
+  determinant() {
+    let result = 0;
+    if (this.length == 2) {
+      result = this[0][0] * this[1][1] - this[0][1] * this[1][0];
+    } else {
+      for (let i = 0; i < this.length; i++) {
+        result += this[0][i] * this.cofactor(0, i);
       }
     }
     return result;
   }
+
+  subMatrix(row, column) {
+    let result = new Matrix();
+    for (let i = 0; i < this.length; i++) {
+      if (i != row) {
+        let inner = [];
+        for (let j = 0; j < this[i].length; j++) {
+          if (j != column) inner.push(this[i][j]);
+        }
+        result.push(inner);
+      }
+    }
+    return result;
+  }
+
+  minor(row, column) {
+    return this.subMatrix(row, column).determinant();
+  }
+
+  cofactor(row, column) {
+    let compare = this.minor(row, column);
+
+    if ((row + column) % 2 === 0) return compare;
+    else return -compare;
+  }
+
+  isInvertible() {
+    return this.determinant() != 0 ? true : false;
+  }
+
+  inverse() {
+    if (!this.isInvertible()) {
+      console.log(`Matrix: ${this} is not invertible`);
+    } else {
+      let result = emptyMatrix(this.length);
+      let det = this.determinant(this);
+      for (let i = 0; i < this.length; i++) {
+        for (let j = 0; j < this.length; j++) {
+          let item = this.cofactor(i, j);
+          result[j][i] = item / det;
+        }
+      }
+      return result;
+    }
+  }
 }
 
-export function emptyMatrix(size) {
-  let matrix = new Array();
+function emptyMatrix(size) {
+  let matrix = new Matrix();
   for (let i = 0; i < size; i++) {
     matrix.push([]);
   }

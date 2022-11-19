@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Matrix } from './matrix.js';
-import { tuple } from './index.js';
+import { Tuple } from './index.js';
 
 describe('Constructing and inspecting a 4x4 matrix \n| 1 | 2 | 3 | 4 |\n| 5.5 | 6.5 | 7.5 | 8.5 |\n| 9 | 10 | 11 | 12 |\n| 13.5 | 14.5 | 15.5 | 16.5 |', function () {
   const M = new Matrix(
@@ -115,10 +115,10 @@ describe('Multiply two 4x4 matrices A= \n| 1 | 2 | 3 | 4 |\n| 5 | 6 | 7 | 8 |\n|
 
 describe('A matrix A= | 1 | 2 | 3 | 4 |\n| 2 | 4 | 4 | 2 |\n| 8 | 6 | 4 | 1 |\n| 0 | 0 | 0 | 1 | multiplied by a tuple (1,2,3,1). ', function () {
   const A = new Matrix([1, 2, 3, 4], [2, 4, 4, 2], [8, 6, 4, 1], [0, 0, 0, 1]);
-  const T = tuple(1, 2, 3, 1);
+  const T = new Tuple(1, 2, 3, 1);
   test('A*B = tuple(18,24,33,1)', function () {
     const actual = A.matrixMultipliedByTuple(T);
-    const outcome = [18, 24, 33, 1];
+    const outcome = new Tuple(18, 24, 33, 1);
     expect(actual).toStrictEqual(outcome);
   });
 });
@@ -132,7 +132,7 @@ describe('Multiplying a matrix by the identity matrix. Matrix A= | 1 | 2 | 3 | 4
 
 describe('Multiplying a tuple by the identity matrix', function () {
   test('Tuple A=(1,2,3,4) * identity matrix = A', function () {
-    const T = tuple(1, 2, 3, 4);
+    const T = new Tuple(1, 2, 3, 4);
     const A = new Matrix().identityMatrix();
     const identity = new Matrix(...A);
     const actual = identity.matrixMultipliedByTuple(T);

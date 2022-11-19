@@ -1,6 +1,6 @@
-export function color(red, green, blue) {
-  return [red, green, blue];
-}
+import { Tuple } from './index.js';
+
+export class Color extends Tuple {}
 
 export function HadamardProduct(color1, color2) {
   let result = [];
@@ -12,7 +12,7 @@ export function HadamardProduct(color1, color2) {
 export function canvas(width, height) {
   let canvas = new Array(height);
   for (let i = 0; i < height; i++) {
-    let c = color(0, 0, 0);
+    let c = new Color(0, 0, 0);
     let inner = [];
     for (let j = 0; j < width; j++) inner.push(c);
     canvas[i] = inner;

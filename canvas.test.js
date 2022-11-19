@@ -1,42 +1,42 @@
 import { describe, expect, test } from '@jest/globals';
 import {
-  color,
+  Color,
   HadamardProduct,
   canvas,
   canvasToPPM,
   writePixel,
 } from './canvas.js';
-import { addTuples, minusTuples, scalar } from './index.js';
+import { Tuple } from './index.js';
 
 describe('Colors are red green blue tuples', function () {
   test('color(-0.5,0.4,1.7) has red value of -0.5', function () {
     const red = -0.5;
-    const actual = color(-0.5, 0.4, 1.7);
+    const actual = new Color(-0.5, 0.4, 1.7);
     expect(actual[0]).toStrictEqual(red);
   });
   test('color(-0.5,0.4,1.7) has green value of 0.4', function () {
     const green = 0.4;
-    const actual = color(-0.5, 0.4, 1.7);
+    const actual = new Color(-0.5, 0.4, 1.7);
     expect(actual[1]).toStrictEqual(green);
   });
   test('color(-0.5,0.4,1.7) has blue value of 1.7', function () {
     const blue = 1.7;
-    const actual = color(-0.5, 0.4, 1.7);
+    const actual = new Color(-0.5, 0.4, 1.7);
     expect(actual[2]).toStrictEqual(blue);
   });
 });
 describe('Manipulating colors', function () {
   test('Adding colors', function () {
-    const c1 = color(0.9, 0.6, 0.75);
-    const c2 = color(0.7, 0.1, 0.25);
-    const actual = addTuples(c1, c2);
-    const outcome = [1.6, 0.7, 1.0];
+    const c1 = new Color(0.9, 0.6, 0.75);
+    const c2 = new Color(0.7, 0.1, 0.25);
+    const actual = c1.addTuples(c2);
+    const outcome = new Tuple(1.6, 0.7, 1.0);
     expect(actual).toStrictEqual(outcome);
   });
   test('Subtracting colors', function () {
-    const c1 = color(0.9, 0.6, 0.75);
-    const c2 = color(0.7, 0.1, 0.25);
-    const temp = minusTuples(c1, c2);
+    const c1 = new Color(0.9, 0.6, 0.75);
+    const c2 = new Color(0.7, 0.1, 0.25);
+    const temp = c1.minusTuples(c2);
     const actual = [];
     temp.forEach((item) => {
       actual.push(Number(item.toFixed(1)));
@@ -45,14 +45,14 @@ describe('Manipulating colors', function () {
     expect(actual).toStrictEqual(outcome);
   });
   test('Adding colors', function () {
-    const c1 = color(0.2, 0.3, 0.4);
-    const actual = scalar(c1, 2);
-    const outcome = [0.4, 0.6, 0.8];
+    const c1 = new Color(0.2, 0.3, 0.4);
+    const actual = c1.scalar(2);
+    const outcome = new Tuple(0.4, 0.6, 0.8);
     expect(actual).toStrictEqual(outcome);
   });
   test('Multiplying colors', function () {
-    const c1 = color(1, 0.2, 0.4);
-    const c2 = color(0.9, 1, 0.1);
+    const c1 = new Color(1, 0.2, 0.4);
+    const c2 = new Color(0.9, 1, 0.1);
     const actual = HadamardProduct(c1, c2);
     const outcome = [0.9, 0.2, 0.04];
     expect(actual[0]).toBeGreaterThanOrEqual(outcome[0]);
@@ -82,9 +82,9 @@ describe('Constructing the PPM header', function () {
 });
 describe('Constructing the PPM pixel data, Given a canvas with set pixels a correct PPM image is returned', function () {
   let c = canvas(5, 3);
-  const c1 = color(1.5, 0, 0);
-  const c2 = color(0, 0.5, 0);
-  const c3 = color(-0.5, 0, 1);
+  const c1 = new Color(1.5, 0, 0);
+  const c2 = new Color(0, 0.5, 0);
+  const c3 = new Color(-0.5, 0, 1);
   c = writePixel(c, 0, 0, c1);
   c = writePixel(c, 2, 1, c2);
   c = writePixel(c, 4, 2, c3);
@@ -106,7 +106,7 @@ describe('Constructing the PPM pixel data, Given a canvas with set pixels a corr
 describe('Splitting long lines in PPM files', function () {
   test('For a canvas(10,2), with set pixels a correct PPM image is returned with the length constraints', function () {
     let c = canvas(10, 2);
-    const c1 = color(1, 0.8, 0.6);
+    const c1 = new Color(1, 0.8, 0.6);
     for (let i = 0; i < c.length; i++) {
       for (let j = 0; j < c[i].length; j++) {
         c = writePixel(c, j, i, c1);
@@ -129,9 +129,9 @@ describe('Splitting long lines in PPM files', function () {
 describe('Ensuring the PPM file ends with a new line character', function () {
   test('Given a canvas(5,3) the last character is for a new line', function () {
     let c = canvas(5, 3);
-    const c1 = color(1.5, 0, 0);
-    const c2 = color(0, 0.5, 0);
-    const c3 = color(-0.5, 0, 1);
+    const c1 = new Color(1.5, 0, 0);
+    const c2 = new Color(0, 0.5, 0);
+    const c3 = new Color(-0.5, 0, 1);
     c = writePixel(c, 0, 0, c1);
     c = writePixel(c, 2, 1, c2);
     c = writePixel(c, 4, 2, c3);

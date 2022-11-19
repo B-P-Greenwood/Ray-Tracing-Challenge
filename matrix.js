@@ -1,3 +1,5 @@
+import { Tuple } from '.';
+
 export class Matrix extends Array {
   static get [Symbol.species]() {
     return this;
@@ -33,7 +35,7 @@ export class Matrix extends Array {
   }
 
   matrixMultipliedByTuple(tuple) {
-    let result = [];
+    let result = new Tuple();
     for (let i = 0; i < this.length; i++) {
       result.push(
         this[i][0] * tuple[0] +

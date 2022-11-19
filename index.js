@@ -1,76 +1,78 @@
-export function tuple(x, y, z, w) {
-  return [x, y, z, w];
-}
-
 export function point(x, y, z) {
-  return [x, y, z, 1];
+  return new Tuple(x, y, z, 1);
 }
 
 export function vector(x, y, z) {
-  return [x, y, z, 0];
+  return new Tuple(x, y, z, 0);
 }
 
-export function equal(a, b) {
-  const variance = 0.00001;
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] - b[i] > variance) return false;
+export class Tuple extends Array {
+  static get [Symbol.species]() {
+    return this;
   }
-  return true;
-}
 
-export function addTuples(a, b) {
-  let result = [];
-  for (let i = 0; i < a.length; i++) {
-    result.push(a[i] + b[i]);
+  equal(b) {
+    const variance = 0.00001;
+    for (let i = 0; i < this.length; i++) {
+      if (this[i] - b[i] > variance) return false;
+    }
+    return true;
   }
-  return result;
-}
 
-export function minusTuples(a, b) {
-  let result = [];
-  for (let i = 0; i < a.length; i++) {
-    result.push(a[i] - b[i]);
+  addTuples(b) {
+    let result = new Tuple();
+    for (let i = 0; i < this.length; i++) {
+      result.push(this[i] + b[i]);
+    }
+    return result;
   }
-  return result;
-}
 
-export function negate(tuple) {
-  let result = [];
-  tuple.forEach((item) => {
-    result.push(-item);
-  });
-  return result;
-}
+  minusTuples(b) {
+    let result = new Tuple();
+    for (let i = 0; i < this.length; i++) {
+      result.push(this[i] - b[i]);
+    }
+    return result;
+  }
 
-export function scalar(tuple, scalar) {
-  let result = [];
-  tuple.forEach((item) => {
-    result.push(item * scalar);
-  });
-  return result;
-}
+  negate() {
+    let result = new Tuple();
+    this.forEach((item) => {
+      result.push(-item);
+    });
 
-export function magnitude(vector) {
-  let reduced = 0;
-  vector.forEach((item) => {
-    reduced += item * item;
-  });
-  return Math.sqrt(reduced);
-}
-export function normalise(tuple) {
-  let result = [];
-  const mag = magnitude(tuple);
-  tuple.forEach((item) => {
-    result.push(item / mag);
-  });
-  return result;
-}
-export function dotProduct(a, b) {
-  let result = 0;
-  a.forEach((item, index) => {
-    result += item * b[index];
-  });
-  return result;
+    return result;
+  }
+  scalar(scalar) {
+    let result = new Tuple();
+    this.forEach((item) => {
+      result.push(item * scalar);
+    });
+    return result;
+  }
+
+  magnitude() {
+    let reduced = 0;
+    this.forEach((item) => {
+      reduced += item * item;
+    });
+    return Math.sqrt(reduced);
+  }
+  normalise() {
+    let result = new Tuple();
+    const mag = this.magnitude();
+    this.forEach((item) => {
+      result.push(item / mag);
+    });
+    return result;
+  }
+  dotProduct(b) {
+    let result = 0;
+    this.forEach((item, index) => {
+      result += item * b[index];
+    });
+    return result;
+  }
 }
 export function crossProduct(a, b) {
   // x = 0;

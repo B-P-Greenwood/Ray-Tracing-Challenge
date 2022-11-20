@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 import { Matrix } from './matrix.js';
-import { Tuple } from './index.js';
+import { point, Tuple, vector } from './index.js';
 
 describe('Constructing and inspecting a 4x4 matrix \n| 1 | 2 | 3 | 4 |\n| 5.5 | 6.5 | 7.5 | 8.5 |\n| 9 | 10 | 11 | 12 |\n| 13.5 | 14.5 | 15.5 | 16.5 |', function () {
   const M = new Matrix(
@@ -391,4 +391,69 @@ test('Confirm that the matrix C (matrix A * matrix B) * inverse(B) = A', functio
   const C = A.multiplyMatrices(B);
   const actual = C.multiplyMatrices(B.inverse());
   expect(actual[3][2]).toBeCloseTo(A[3][2], 5);
+});
+
+describe('Multiplying by a translation matrix', function () {
+  test('Given translation(5,-3,2)and point(-3,4,5) the two multiplied is point(2,1,7)', function () {
+    const tran = new Matrix().translation(5, -3, 2);
+    const P = point(-3, 4, 5);
+    const outcome = point(2, 1, 7);
+    const actual = tran.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Multiplying by the inverse of atranslation matrix', function () {
+  test('Given inverse of translation(5,-3,2)and point(-3,4,5) the two multiplied is point(-8,7,3)', function () {
+    const tran = new Matrix().translation(5, -3, 2);
+    const P = point(-3, 4, 5);
+    const inverse = tran.inverse();
+    const outcome = point(-8, 7, 3);
+    const actual = inverse.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Translation does not affect Vectors', function () {
+  test('Given translation(5,-3,2)and vector(-3,4,5) the two multiplied is vector(-3,4,5)', function () {
+    const tran = new Matrix().translation(5, -3, 2);
+    const P = vector(-3, 4, 5);
+    const actual = tran.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(P);
+  });
+});
+describe('A Scaling Matrix applied to a point', function () {
+  test('Given scaling(2,3,4)and point(-4,6,8) the two multiplied is point(-8,18,32)', function () {
+    const scal = new Matrix().scaling(2, 3, 4);
+    const P = point(-4, 6, 8);
+    const outcome = point(-8, 18, 32);
+    const actual = scal.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('A Scaling Matrix applied to a vector', function () {
+  test('Given scaling(2,3,4)and vector(-4,6,8) the two multiplied is vector(-8,18,32)', function () {
+    const scal = new Matrix().scaling(2, 3, 4);
+    const P = vector(-4, 6, 8);
+    const outcome = vector(-8, 18, 32);
+    const actual = scal.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('A Scaling inverse Matrix applied to a vector', function () {
+  test('Given scaling(2,3,4)and vector(-4,6,8) the two multiplied is vector(-8,18,32)', function () {
+    const scal = new Matrix().scaling(2, 3, 4);
+    const inverse = scal.inverse();
+    const P = vector(-4, 6, 8);
+    const outcome = vector(-2, 2, 2);
+    const actual = inverse.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
+});
+describe('Reflection is scaling by a negative value', function () {
+  test('Given scaling(-1,1,1)and vector(-4,6,8) the two multiplied is vector(-8,18,32)', function () {
+    const scal = new Matrix().scaling(-1, 1, 1);
+    const P = point(2, 3, 4);
+    const outcome = point(-2, 3, 4);
+    const actual = scal.matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(outcome);
+  });
 });

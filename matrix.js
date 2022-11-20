@@ -1,4 +1,4 @@
-import { Tuple } from '.';
+import { Tuple } from './index.js';
 
 export class Matrix extends Array {
   static get [Symbol.species]() {
@@ -49,6 +49,22 @@ export class Matrix extends Array {
 
   identityMatrix() {
     return new Matrix([1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]);
+  }
+
+  translation(x, y, z) {
+    let matrix = this.identityMatrix();
+    matrix[0][3] = x;
+    matrix[1][3] = y;
+    matrix[2][3] = z;
+    return matrix;
+  }
+
+  scaling(x, y, z) {
+    let matrix = this.identityMatrix();
+    matrix[0][0] = x;
+    matrix[1][1] = y;
+    matrix[2][2] = z;
+    return matrix;
   }
 
   transposingMatrix() {

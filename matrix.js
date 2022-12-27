@@ -94,6 +94,17 @@ export class Matrix extends Array {
     return matrix;
   }
 
+  shearing(xy, xz, yx, yz, zx, zy){
+    let matrix = this.identityMatrix();
+    matrix[0][1] = xy;
+    matrix[0][2] = xz;
+    matrix[1][0] = yx;
+    matrix[1][2] = yz;
+    matrix[2][0] = zx;
+    matrix[2][1] = zy;
+    return matrix;
+  }
+
   transposingMatrix() {
     let result = new Matrix();
     for (let i = 0; i < this.length; i++) {

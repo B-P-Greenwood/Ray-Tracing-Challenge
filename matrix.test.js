@@ -508,3 +508,74 @@ describe('Rotating a point around the z axis', function(){
     expect(actual).toStrictEqual(expect.arrayContaining(outcome));
   })
 })
+describe('a shearing transformation moves x in proportion to y', function(){
+  const P = point(2,3,4);
+  test('shearing(1,0,0,0,0,0)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(1,0,0,0,0,0);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(5,3,4);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+  test('shearing(0,1,0,0,0,0)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(0,1,0,0,0,0);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(6,3,4);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+  test('shearing(0,0,1,0,0,0)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(0,0,1,0,0,0);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(2,5,4);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+  test('shearing(0,0,0,1,0,0)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(0,0,0,1,0,0);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(2,7,4);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+  test('shearing(0,0,0,0,1,0)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(0,0,0,0,1,0);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(2,3,6);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+  test('shearing(0,0,0,0,0,1)*point(2,3,4) equals point(5,3,4)', function(){
+    const trans = new Matrix().shearing(0,0,0,0,0,1);
+    const actual = trans.matrixMultipliedByTuple(P);
+    const outcome = point(2,3,7);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+})
+describe('individual trnsformtions are applied in sequence', function(){
+  const P = point(1,0,1);
+  const A = new Matrix().rotation_x(Math.PI/2);
+  const B = new Matrix().scaling(5,5,5);
+  const C = new Matrix().translation(10,5,7);
+  const P2 = point(1,-1,0);
+  const P3 = point(5,-5,0);
+  const P4 = point(15,0,7);
+  test('apply rotation first', function(){
+    const actual = A.matrixMultipliedByTuple(P);
+    expect(actual[1]).toStrictEqual(P2[1]);
+  })
+  test('then apply scaling', function(){
+    const actual = B.matrixMultipliedByTuple(P2);
+    expect(actual).toStrictEqual(expect.arrayContaining(P3));
+  })
+  test('then apply translation', function(){
+    const actual = C.matrixMultipliedByTuple(P3);
+    expect(actual).toStrictEqual(expect.arrayContaining(P4));
+  })
+})
+describe('chained transformation must be applied in reverse order', function(){
+  const P = point(1,0,1);
+  const A = new Matrix().rotation_x(Math.PI/2);
+  const B = new Matrix().scaling(5,5,5);
+  const C = new Matrix().translation(10,5,7);
+  const P4 = point(15,0,7);
+  test('C*B*A = point(15,0,7)', function(){
+    const actual = C.multiplyMatrices(B).multiplyMatrices(A).matrixMultipliedByTuple(P);
+    expect(actual).toStrictEqual(expect.arrayContaining(P4));
+  })
+})

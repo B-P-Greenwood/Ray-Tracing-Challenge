@@ -67,6 +67,33 @@ export class Matrix extends Array {
     return matrix;
   }
 
+  rotation_x(radians){
+    let matrix = this.identityMatrix();
+    matrix[1][1] = Math.cos(radians);
+    matrix[1][2] = -Math.sin(radians);
+    matrix[2][1] = Math.sin(radians);
+    matrix[2][2] = Math.cos(radians);
+    return matrix;
+  }
+
+  rotation_y(radians){
+    let matrix = this.identityMatrix();
+    matrix[0][0] = Math.cos(radians);
+    matrix[0][2] = Math.sin(radians);
+    matrix[2][0] = -Math.sin(radians);
+    matrix[2][2] = Math.cos(radians);
+    return matrix;
+  }
+
+  rotation_z(radians){
+    let matrix = this.identityMatrix();
+    matrix[0][0] = Math.cos(radians);
+    matrix[0][1] = -Math.sin(radians);
+    matrix[1][0] = Math.sin(radians);
+    matrix[1][1] = Math.cos(radians);
+    return matrix;
+  }
+
   transposingMatrix() {
     let result = new Matrix();
     for (let i = 0; i < this.length; i++) {

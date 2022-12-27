@@ -457,3 +457,54 @@ describe('Reflection is scaling by a negative value', function () {
     expect(actual).toStrictEqual(outcome);
   });
 });
+describe('Rotating a point around the X axis', function(){
+  const P = point(0,1,0);
+  const half = new Matrix().rotation_x(Math.PI/4);
+  test('given point(0,1,0), quarter turn equals point(0,sqr2/2, sqr2/2)', function(){
+    const actual = half.matrixMultipliedByTuple(P);
+    const outcome = point(0, Math.sqrt(2)/2, Math.sqrt(2)/2);
+    expect(actual[1]).toBeCloseTo(outcome[1]);
+  })
+  test('given point(0,1,0), half turn equlas point(0,0,1)', function(){
+    const full = new Matrix().rotation_x(Math.PI/2);
+    const outcome = point(0, 0,1)
+    const actual = full.matrixMultipliedByTuple(P);
+    expect(actual[1]).toBeCloseTo(outcome[1]);
+  })
+  test('The inverse of an x-rotation rotates in the opposite direction', function(){
+    const inv = half.inverse();
+    const actual = inv.matrixMultipliedByTuple(P);
+    const outcome = point(0, Math.sqrt(2)/2, -Math.sqrt(2)/2)
+    expect(actual[2]).toBeCloseTo(outcome[2]);
+  })
+})
+describe('Rotating a point around the y axis', function(){
+  const P = point(0,0,1);
+  const half = new Matrix().rotation_y(Math.PI/4);
+  test('Given point(0,0,1) quarter turn equals point(sqr2/2, 0, sqr2/2)', function(){
+    const actual = half.matrixMultipliedByTuple(P);
+    const outcome = point(Math.sqrt(2)/2, 0, Math.sqrt(2)/2);
+    expect(actual[0]).toBeCloseTo(outcome[0]);
+  })
+  test('Given point(0,0,1) full turn equals point(sqr2/2, 0, sqr2/2)', function(){
+    const full = new Matrix().rotation_y(Math.PI/2);
+    const actual = full.matrixMultipliedByTuple(P);
+    const outcome = point(1,0,0);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+})
+describe('Rotating a point around the z axis', function(){
+  const P = point(0,1,0);
+  const half = new Matrix().rotation_z(Math.PI/4);
+  test('Given point(0,1,0) quarter turn equals point(-sqr2/2, sqr2/2,0)', function(){
+    const actual = half.matrixMultipliedByTuple(P);
+    const outcome = point(-Math.sqrt(2)/2, Math.sqrt(2)/2, 0);
+    expect(actual[0]).toBeCloseTo(outcome[0]);
+  })
+  test('Given point(0,1,0) full turn equals point(-sqr2/2, sqr2/2,0)', function(){
+    const full = new Matrix().rotation_z(Math.PI/2);
+    const actual = full.matrixMultipliedByTuple(P);
+    const outcome = point(-1,0,0);
+    expect(actual).toStrictEqual(expect.arrayContaining(outcome));
+  })
+})

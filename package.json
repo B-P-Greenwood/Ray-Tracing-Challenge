@@ -7,7 +7,8 @@
   "scripts": {
     "matrix": "node matrix.js",
     "go": "node index.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "output": "node OutputScripts/Chapter4Output.js"
   },
   "repository": {
     "type": "git",
